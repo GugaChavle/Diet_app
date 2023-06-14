@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Food</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Add Food</h1>
+    <form method="POST" action="{{ url_for('add_food') }}">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required><br><br>
+        <label for="calorie">Calorie:</label>
+        <input type="number" id="calorie" name="calorie" required><br><br>
+        <input type="submit" value="Add">
+    </form>
+</body>
+</html>
