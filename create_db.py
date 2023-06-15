@@ -1,9 +1,9 @@
 import sqlite3
 
-# Connect to the SQLite database
+
 conn = sqlite3.connect('diet.db')
 
-# Create a cursor object to execute SQL commands
+
 cursor = conn.cursor()
 
 
@@ -16,10 +16,17 @@ CREATE TABLE IF NOT EXISTS food (
     date_of_reception TEXT NOT NULL
 );
 '''
-
-# Execute the SQL statement to create the table
+create_user_query = ('''
+    CREATE TABLE IF NOT EXISTS user (
+        id INTEGER PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        last_login DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+''')
 cursor.execute(create_table_query)
+cursor.execute(create_user_query)
 
-# Commit the changes and close the connection
+
 conn.commit()
 conn.close()
