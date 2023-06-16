@@ -154,7 +154,7 @@ def edit_food(food_id):
     return render_template('edit_food.html', food=food)
 
 
-@app.route('/delete_food/<int:food_id>', methods=['POST'])
+@app.route('/delete_food/<int:food_id>', methods=['GET'])
 def delete_food(food_id):
     food = Food.query.get_or_404(food_id)
     db.session.delete(food)
@@ -165,37 +165,51 @@ def delete_food(food_id):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User(username=username, password=password)
-        db.session.add(user)
-        db.session.commit()
-        flash('რეგისტრაცია წარმატებით გაიარეთ.', 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html')
+    logged = session.get('user_id')
+    if(not logged):
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            user = User(username=username, password=password)
+            db.session.add(user)
+            db.session.commit()
+            flash('რეგისტრაცია წარმატებით გაიარეთ.', 'success')
+            return redirect(url_for('login'))
+        return render_template('register.html')
+    return redirect(url_for('home'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username, password=password).first()
-        if user:
-            session['user_id'] = user.id
-            flash('წარმატებით შეხვედით!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('არასწორი მომხარებლის სახელი ან პაროლი.', 'error')
-    return render_template('login.html')
+    logged = session.get('user_id')
+    if(not logged):
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            user = User.query.filter_by(username=username, password=password).first()
+            if user:
+                session['user_id'] = user.id
+                session['username'] = username
+                flash('წარმატებით შეხვედით!', 'success')
+                return redirect(url_for('home'))
+            else:
+                flash('არასწორი მომხარებლის სახელი ან პაროლი.', 'error')
+        return render_template('login.html')
+    return redirect(url_for('home'))
 
 
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
+    session.pop('username', None)
     flash('თქვენ გამოხვედით.', 'success')
     return redirect(url_for('home'))
+
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
 if __name__ == '__main__':

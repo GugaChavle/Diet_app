@@ -1,45 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Flask Diet App</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    <h1>Food List</h1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Calorie</th>
-            <th>Date of Reception</th>
-            <th>Actions</th>
-        </tr>
-        {% for food in foods %}
-        <tr>
-            <td>{{ food.name }}</td>
-            <td>{{ food.category }}</td>
-            <td>{{ food.calorie }}</td>
-            <td>{{ food.date_of_reception }}</td>
-            <td>
-                <a href="{{ url_for('edit_food', food_id=food.id) }}">Edit</a> |
-                <a href="{{ url_for('delete_food', food_id=food.id) }}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="{{ url_for('add_food') }}">Add Food</a>
+{% extends "base.html" %}
 
-<form method="POST" action="{{ url_for('filter_by_date') }}" class="form-inline mb-3">
+{% block content %}
+
+<h1 style="margin-top: 100px; text-align: center;">საკვების სია</h1>
+
+<table class="table table-striped" style="width: 90%; margin-left: 100px;">
+    <thead>
+        <tr>
+            <th>სახელი</th>
+            <th>კატეგორია</th>
+            <th>კალორია</th>
+            <th>მიღების თარიღი</th>
+            <th>რედაქტირება</th>
+            <th>წაშლა</th>
+        </tr>
+    </thead>
+    <tbody>
+         {% for food in foods %}
+            <tr>
+                <td>{{ food.name }}</td>
+                <td>{{ food.category }}</td>
+                <td>{{ food.calorie }}</td>
+                <td>{{ food.date_of_reception }}</td>
+                <td>
+                    <a href="{{ url_for('edit_food', food_id=food.id) }}" class="btn btn-success">რედაქტირება</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('delete_food', food_id=food.id) }}" class="btn btn-danger">მონაცემის წაშლა</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<form method="POST" action="{{ url_for('filter_by_date') }}" class="form-inline mb-3" style="margin-left: 100px;">
   <div class="form-group">
-    <label for="filter_date">Date:</label>
+    <label for="filter_date">თარიღი:</label>
     <input type="date" class="form-control" id="filter_date" name="filter_date" required>
   </div>
-  <div class="form-group ml-2">
-    <label for="filter_hour">Hour:</label>
-     <select class="form-control" id="filter_hour" name="filter_hour" required>
-  <option value="00">00</option>
-      <option value="01">01</option>
-      <option value="02">02</option>
+<div class="form-group ml-2">
+    <label for="filter_hour">საათი:</label>
+    <select class="form-control" id="filter_hour" name="filter_hour" required>
+        <option value="00">00</option>
+        <option value="01">01</option>
+        <option value="02">02</option>
         <option value="03">03</option>
         <option value="04">04</option>
         <option value="05">05</option>
@@ -50,25 +55,20 @@
         <option value="10">10</option>
         <option value="11">11</option>
         <option value="12">12</option>
-         <option value="12">13</option>
-         <option value="12">14</option>
-         <option value="12">15</option>
-         <option value="12">16</option>
-         <option value="12">17</option>
-         <option value="12">18</option>
-         <option value="12">19</option>
-         <option value="12">20</option>
-         <option value="12">21</option>
-         <option value="12">22</option>
-         <option value="12">23</option>
-         <option value="12">24</option>
-
-
-</select>
-  </div>
-  <button type="submit" class="btn btn-primary ml-2">Filter</button>
+        <option value="12">13</option>
+        <option value="12">14</option>
+        <option value="12">15</option>
+        <option value="12">16</option>
+        <option value="12">17</option>
+        <option value="12">18</option>
+        <option value="12">19</option>
+        <option value="12">20</option>
+        <option value="12">21</option>
+        <option value="12">22</option>
+        <option value="12">23</option>
+        <option value="12">24</option>
+    </select>
+</div>
+<button type="submit" class="btn btn-primary ml-2">Filter</button>
 </form>
-
-
-</body>
-</html>
+{% endblock %}

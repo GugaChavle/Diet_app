@@ -24,9 +24,15 @@ create_user_query = ('''
         last_login DATETIME DEFAULT CURRENT_TIMESTAMP
     )
 ''')
+
+create_max_calorie_query = ('''
+    CREATE TABLE IF NOT EXISTS max_calories (
+        amount INTEGER
+    )
+''')
 cursor.execute(create_table_query)
 cursor.execute(create_user_query)
-
+cursor.execute(create_max_calorie_query)
 
 conn.commit()
 conn.close()
